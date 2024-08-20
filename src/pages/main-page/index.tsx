@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import ErrorMessage from "../../components/error";
 import Spiner from "../../components/spiner";
 import { FaSortDown } from "react-icons/fa";
+import Pagination from "../../components/pagination";
 
 const MainPage = () => {
   const { data, loading, error, sortData, sortDirection } = useApiData();
@@ -63,7 +64,7 @@ const MainPage = () => {
           </tbody>
         </table>
       )}
-
+      <Pagination />
       <ErrorMessage error={error} />
     </div>
   );

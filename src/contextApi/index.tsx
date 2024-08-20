@@ -71,7 +71,7 @@ export const ContextApi = ({ children }: Props) => {
 
   const pageManipulation: Page = {
     firstPage: useCallback(() => setPage(1), []),
-    lastPage: useCallback(() => setPage(200), []),
+    lastPage: useCallback(() => setPage(200 / limit), []),
     nextPage: useCallback(() => setPage((prev) => (prev += 1)), []),
     prevPage: useCallback(() => setPage((prev) => (prev -= 1)), []),
 

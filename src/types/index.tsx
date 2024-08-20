@@ -18,6 +18,7 @@ export type ApiContextType = {
   sortData: () => void;
   sortDirection: "asc" | "desc";
 };
+
 export type Page = {
   firstPage: () => void;
   lastPage: () => void;

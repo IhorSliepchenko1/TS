@@ -60,6 +60,7 @@ const UserPage = () => {
           </tr>
         </tbody>
       </table>
+
       <ErrorMessage error={error} />
     </div>
   );
