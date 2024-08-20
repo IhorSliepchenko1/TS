@@ -2,28 +2,10 @@ import { createContext, useCallback, useContext, useState } from "react";
 import { useEffect } from "react";
 import axios, { AxiosError } from "axios";
 import { BASE_URL } from "../api";
-import { Todos } from "../types/index";
+import { ApiContextType, Page, Todos } from "../types/index";
 
 type Props = {
   children: React.ReactNode;
-};
-type ApiContextType = {
-  loading: boolean;
-  data: Todos[];
-  user: Todos | null;
-  page: number;
-  limit: number;
-  pageManipulation: Page;
-  fetchUser: (id: number | string) => Promise<void>;
-  limitManipulation: (limit: number) => void;
-  error: string | null;
-};
-type Page = {
-  firstPage: () => void;
-  lastPage: () => void;
-  nextPage: () => void;
-  prevPage: () => void;
-  specificPage: (page: number) => void;
 };
 
 const ApiContext = createContext<ApiContextType | undefined>(undefined);
@@ -36,6 +18,9 @@ export const ContextApi = ({ children }: Props) => {
   const [error, setError] = useState<string | null>(null);
   const [user, setUser] = useState<Todos | null>(null);
 
+  const [sortedData, setSortedData] = useState<Todos[]>([]);
+  const [sortDirection, setSortDirection] = useState<"asc" | "desc">("asc");
+
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
@@ -47,17 +32,28 @@ export const ContextApi = ({ children }: Props) => {
             _page: page,
           },
         });
-
         setData(response.data);
+        setSortedData(response.data);
+        setLoading(false);
       } catch (error) {
         setError((error as AxiosError).message);
-      } finally {
-        setLoading(false);
       }
     };
 
     fetchData();
   }, [limit, page]);
+
+  const sortData = () => {
+    const sorted = [...data].sort((a, b) => {
+      const aCompleted = a.completed ? 1 : 0;
+      const bCompleted = b.completed ? 1 : 0;
+      return sortDirection === "asc"
+        ? aCompleted - bCompleted
+        : bCompleted - aCompleted;
+    });
+    setSortedData(sorted);
+    setSortDirection(sortDirection === "asc" ? "desc" : "asc");
+  };
 
   const fetchUser = async (id: number | string) => {
     setLoading(true);
@@ -67,10 +63,9 @@ export const ContextApi = ({ children }: Props) => {
       const response = await axios.get<Todos>(`${BASE_URL}/${id}`);
 
       setUser(response.data);
+      setLoading(false);
     } catch (error) {
       setError((error as AxiosError).message);
-    } finally {
-      setLoading(false);
     }
   };
 
@@ -95,7 +90,7 @@ export const ContextApi = ({ children }: Props) => {
     <ApiContext.Provider
       value={{
         loading,
-        data,
+        data: sortedData,
         page,
         limit,
         pageManipulation,
@@ -103,6 +98,8 @@ export const ContextApi = ({ children }: Props) => {
         fetchUser,
         error,
         user,
+        sortDirection,
+        sortData,
       }}
     >
       {children}

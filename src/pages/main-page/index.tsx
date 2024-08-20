@@ -2,30 +2,38 @@ import { useApiData } from "../../contextApi";
 import { FaEye } from "react-icons/fa";
 import style from "./index.module.scss";
 import { useNavigate } from "react-router-dom";
+import ErrorMessage from "../../components/error";
+import Spiner from "../../components/spiner";
+import { FaSortDown } from "react-icons/fa";
 
 const MainPage = () => {
-  const { data, loading, error } = useApiData();
+  const { data, loading, error, sortData, sortDirection } = useApiData();
 
   const navigate = useNavigate();
 
   return (
     <div className={style.main}>
       {loading ? (
-        `loading...`
-      ) : error ? (
-        <>{error}</>
+        <Spiner />
       ) : (
         <table>
           <thead>
             <tr>
               <th>id</th>
-              <th>completed</th>
+              <th className={style.th_completed} onClick={sortData}>
+                <span>completed</span>
+                <FaSortDown
+                  style={{
+                    cursor: `pointer`,
+                    transform:
+                      sortDirection === "asc" ? "rotate(180deg)" : "none",
+                  }}
+                />
+              </th>
               <th>title</th>
               <th>userId</th>
             </tr>
           </thead>
-
-          <div>{error} </div>
 
           <tbody>
             {data?.map((todo) => (
@@ -55,6 +63,8 @@ const MainPage = () => {
           </tbody>
         </table>
       )}
+
+      <ErrorMessage error={error} />
     </div>
   );
 };

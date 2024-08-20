@@ -2,6 +2,8 @@ import { useNavigate, useParams } from "react-router-dom";
 import style from "./index.module.scss";
 import { useEffect } from "react";
 import { useApiData } from "../../contextApi";
+import Spiner from "../../components/spiner";
+import ErrorMessage from "../../components/error";
 
 const UserPage = () => {
   const { id } = useParams();
@@ -15,9 +17,10 @@ const UserPage = () => {
   }, [id]);
 
   return loading ? (
-    `loading...`
+    <Spiner />
   ) : (
     <div className={style.main}>
+      {/* <Spiner /> */}
       <div className={style.btn_container}>
         <button className={style.main_page} onClick={() => navigate(`/`)}>
           на главную
@@ -46,21 +49,18 @@ const UserPage = () => {
           </tr>
         </thead>
 
-        {error ? (
-          error
-        ) : (
-          <tbody>
-            <tr>
-              <td>{user?.id}</td>
-              <td style={{ color: user?.completed ? `green` : `red` }}>
-                {user?.completed ? `выполнено` : `не выполнено`}
-              </td>
-              <td>{user?.title}</td>
-              <td>{user?.userId}</td>
-            </tr>
-          </tbody>
-        )}
+        <tbody>
+          <tr>
+            <td>{user?.id}</td>
+            <td style={{ color: user?.completed ? `green` : `red` }}>
+              {user?.completed ? `выполнено` : `не выполнено`}
+            </td>
+            <td>{user?.title}</td>
+            <td>{user?.userId}</td>
+          </tr>
+        </tbody>
       </table>
+      <ErrorMessage error={error} />
     </div>
   );
 };
