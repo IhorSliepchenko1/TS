@@ -10,9 +10,11 @@ type Props = {
 type ApiContextType = {
   loading: boolean;
   data: Todos[];
+  user: Todos | null;
   page: number;
   limit: number;
   pageManipulation: Page;
+  fetchUser: (id: number | string) => Promise<void>;
   limitManipulation: (limit: number) => void;
   error: string | null;
 };
@@ -32,6 +34,7 @@ export const ContextApi = ({ children }: Props) => {
   const [page, setPage] = useState<number>(1);
   const [limit, setLimit] = useState<number>(50);
   const [error, setError] = useState<string | null>(null);
+  const [user, setUser] = useState<Todos | null>(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -55,6 +58,21 @@ export const ContextApi = ({ children }: Props) => {
 
     fetchData();
   }, [limit, page]);
+
+  const fetchUser = async (id: number | string) => {
+    setLoading(true);
+    setError(null);
+
+    try {
+      const response = await axios.get<Todos>(`${BASE_URL}/${id}`);
+
+      setUser(response.data);
+    } catch (error) {
+      setError((error as AxiosError).message);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const pageManipulation: Page = {
     firstPage: useCallback(() => setPage(1), []),
@@ -82,7 +100,9 @@ export const ContextApi = ({ children }: Props) => {
         limit,
         pageManipulation,
         limitManipulation,
+        fetchUser,
         error,
+        user,
       }}
     >
       {children}

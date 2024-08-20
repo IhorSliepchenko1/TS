@@ -1,0 +1,62 @@
+.main {
+  display: grid;
+  justify-content: center;
+  text-align: center;
+  padding: 10px;
+}
+.btn_container {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+.prev {
+  border: 0;
+  border-radius: 3px;
+  padding: 2px 5px;
+  background-color: red;
+  color: white;
+  cursor: pointer;
+  transition: 0.2s ease-in-out;
+
+  &:hover {
+    background-color: rgb(241, 60, 60);
+  }
+}
+.next {
+  border: 0;
+  border-radius: 3px;
+  padding: 2px 5px;
+  background-color: green;
+  color: white;
+  cursor: pointer;
+  transition: 0.2s ease-in-out;
+
+  &:hover {
+    background-color: rgb(3, 158, 3);
+  }
+}
+
+.btn_slot {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.main_page {
+  border: 1px solid teal;
+  background-color: white;
+  color: teal;
+  padding: 5px 8px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: 0.2s ease-in-out;
+
+  &:hover {
+    background-color: teal;
+    color: white;
+  }
+}
+
+.id {
+  color: white;
+}

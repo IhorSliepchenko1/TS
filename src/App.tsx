@@ -1,26 +1,24 @@
-import { useApiData } from "./contextApi";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import MainPage from "./pages/main-page";
+import UserPage from "./pages/user-page/index";
+import { ContextApi } from "./contextApi";
 
 const App = () => {
-  const {
-    loading,
-    data,
-    page,
-    // limit,
-    pageManipulation,
-    // limitManipulation,
-    error,
-  } = useApiData();
-  console.log(data);
-
-  console.log(error);
+  const router = createBrowserRouter([
+    {
+      path: "/",
+      element: <MainPage />,
+    },
+    {
+      path: "/user/:id",
+      element: <UserPage />,
+    },
+  ]);
 
   return (
-    <>
-      <div>{loading ? `loading...` : `end loading...`}</div>
-      <button onClick={() => pageManipulation.nextPage()}>next</button>
-      <span>{page}</span>
-      <button onClick={() => pageManipulation.prevPage()}>prev</button>
-    </>
+    <ContextApi>
+      <RouterProvider router={router} />
+    </ContextApi>
   );
 };
 
