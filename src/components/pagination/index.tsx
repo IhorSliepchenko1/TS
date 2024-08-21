@@ -1,3 +1,4 @@
+import { useMemo } from "react";
 import { useApiData } from "../../contextApi";
 import Button from "../button";
 import style from "./index.module.scss";
@@ -6,10 +7,9 @@ const Pagination = () => {
 
   const totalPages = Math.ceil(200 / limit);
 
-  const arryNumber: number[] = Array.from(
-    { length: totalPages },
-    (_, i) => i + 1
-  );
+  const arryNumber = useMemo(() => {
+    return Array.from({ length: totalPages }, (_, i) => i + 1);
+  }, [totalPages]);
 
   return (
     <div className={style.btn_container}>
@@ -28,6 +28,7 @@ const Pagination = () => {
           onClick={() => pageManipulation.specificPage(number)}
           number={number}
           disabled={false}
+          page={page}
         />
       ))}
 

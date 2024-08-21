@@ -12,7 +12,7 @@ export type ApiContextType = {
   page: number;
   limit: number;
   pageManipulation: Page;
-  fetchUser: (id: number | string) => Promise<void>;
+  fetchUser: (id: number | string) => void;
   limitManipulation: (limit: number) => void;
   error: string | null;
   sortData: () => void;
