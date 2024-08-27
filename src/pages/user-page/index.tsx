@@ -2,7 +2,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import style from "./index.module.scss";
 import { useEffect } from "react";
 import { useApiData } from "../../contextApi";
-import Spiner from "../../components/spiner";
+import Spinner from "../../components/spiner";
 import ErrorMessage from "../../components/error";
 
 const UserPage = () => {
@@ -17,7 +17,7 @@ const UserPage = () => {
   }, [id]);
 
   return loading ? (
-    <Spiner />
+    <Spinner />
   ) : (
     <div className={style.main}>
       {/* <Spiner /> */}
